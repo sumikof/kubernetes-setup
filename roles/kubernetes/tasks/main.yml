@@ -1,0 +1,35 @@
+---
+- name: Upgrade all package
+  apt:
+    update_cache: yes
+    upgrade: yes
+
+- name: Install apt packages
+  apt:
+    name:
+      - curl
+      - apt-transport-https
+
+- name: set apt key
+  apt_key:
+    url: "https://packages.cloud.google.com/apt/doc/apt-key.gpg"
+    state: present
+
+- name: add apt repository
+  apt_repository:
+    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+    state: present
+
+- name: apt update
+  apt:
+    update_cache: yes
+
+- name: Install apt packages
+  apt:
+    name:
+      - vim
+      - git
+      - wget
+      - kubelet
+      - kubeadm
+      - kubectl

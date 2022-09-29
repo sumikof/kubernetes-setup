@@ -1,0 +1,38 @@
+---
+- name: apt update
+  apt:
+    update_cache: yes
+
+- name: Install apt packages
+  apt:
+    name:
+      - keepalived
+      - haproxy
+
+- name: copy /etc/keepalived/keepalived.conf
+  copy:
+    src: keepalived.conf
+    dest: /etc/keepalived/keepalived.conf
+    owner: root
+    group: root
+
+- name: copy /etc/haproxy/haproxy.cfg
+  copy:
+    src: haproxy.cfg
+    dest: /etc/haproxy/haproxy.cfg
+    owner: root
+    group: root
+
+- name: haproxy restart
+  service:
+    name: haproxy
+    state: restarted
+    enabled: yes
+
+
+- name: keepalived restart
+  service:
+    name: keepalived
+    state: restarted
+    enabled: yes
+

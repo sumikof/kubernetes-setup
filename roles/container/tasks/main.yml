@@ -47,6 +47,11 @@
     dest: /etc/docker/daemon.json
     owner: root
     group: root
+- name: rm /etc/containerd/config.toml
+  file:
+    path: "/etc/containerd/config.toml"
+    state: absent
+
 
 - name:  systemctl daemon-reload 
   ansible.builtin.systemd:

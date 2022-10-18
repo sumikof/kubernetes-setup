@@ -3,6 +3,7 @@
   gather_facts: false
   become: yes
   roles:
-    - container
-    - kubernetes
-    - HA
+    - host
+    #- container
+    #- kubernetes
+    #- HA

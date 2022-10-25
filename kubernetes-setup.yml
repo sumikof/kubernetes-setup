@@ -1,9 +1,13 @@
 ---
-- hosts: kubernetes
+- hosts: all
   gather_facts: false
   become: yes
   roles:
-    - host
-    #- container
-    #- kubernetes
-    #- HA
+    - common
+    - container
+    - kubernetes
+- hosts: kube-master
+  gather_facts: yes
+  become: yes
+  roles:
+    - HA

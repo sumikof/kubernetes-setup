@@ -63,3 +63,8 @@
     state: restarted
     enabled: yes
 
+- name: containerd restart
+  service:
+    name: containerd
+    state: restarted
+    enabled: yes

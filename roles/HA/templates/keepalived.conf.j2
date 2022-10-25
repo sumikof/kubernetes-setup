@@ -10,7 +10,7 @@ vrrp_instance VI_1 {
     state MASTER
     interface ens33
     virtual_router_id 100
-    priority 101
+    priority {{ ansible_facts.default_ipv4.address.split('.')[3] }}
     advert_int 1
     authentication {
         auth_type PASS

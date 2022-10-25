@@ -10,8 +10,8 @@
       - haproxy
 
 - name: copy /etc/keepalived/keepalived.conf
-  copy:
-    src: keepalived.conf
+  template:
+    src: keepalived.conf.j2
     dest: /etc/keepalived/keepalived.conf
     owner: root
     group: root

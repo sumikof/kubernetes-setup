@@ -12,14 +12,23 @@
       - apt-transport-https
       - ca-certificates
 
+- name: set lsb-release
+  command: "lsb_release -cs"
+  register: result
+
+- name: set lsb-release
+  command: "dpkg --print-architecture"
+  register: architecture
+
 - name: set apt key
   apt_key:
     url: "https://download.docker.com/linux/ubuntu/gpg"
     state: present
+    keyring: /etc/apt/keyrings/docker.gpg
 
 - name: add apt repository
   apt_repository:
-    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
+    repo: "deb [arch={{ architecture.stdout }}  signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu {{ result.stdout }} stable"
     state: present
 
 - name: apt update

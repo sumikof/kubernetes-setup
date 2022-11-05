@@ -1,0 +1,22 @@
+USER={{ ansible_user }}
+sudo apt install uuid -y
+CONTROL_PLANE_IPS="192.168.10.12"
+UUID=`uuid`
+TMPDIR=/tmp/cred/$UUID
+mkdir -p $TMPDIR
+for host in ${CONTROL_PLANE_IPS}; do
+    sudo cp /etc/kubernetes/pki/ca.crt ${TMPDIR}/
+    sudo cp /etc/kubernetes/pki/ca.key ${TMPDIR}/
+    sudo cp /etc/kubernetes/pki/sa.key ${TMPDIR}/
+    sudo cp /etc/kubernetes/pki/sa.pub ${TMPDIR}/
+    sudo cp /etc/kubernetes/pki/front-proxy-ca.crt ${TMPDIR}/
+    sudo cp /etc/kubernetes/pki/front-proxy-ca.key ${TMPDIR}/
+    sudo cp /etc/kubernetes/pki/etcd/ca.crt ${TMPDIR}/etcd-ca.crt
+    sudo cp /etc/kubernetes/pki/etcd/ca.key ${TMPDIR}/etcd-ca.key
+    sudo cp /etc/kubernetes/admin.conf ${TMPDIR}/
+    sudo tar cf ${TMPDIR}.tar ${TMPDIR}
+    scp ${TMPDIR}.tar "${USER}"@$host:kubernetes-key.tar
+done
+
+sudo rm ${TMPDIR}.tar
+sudo rm -rf /tmp/cred

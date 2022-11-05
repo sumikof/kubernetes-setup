@@ -14,5 +14,5 @@
     user: "{{ ansible_user }}"
     state: present
     key: "{{ hostvars[item].result.public_key }}"
-  loop: "{{ groups['all'] }}"
+  loop: "{{ groups['ras-cluster'] }}"
 

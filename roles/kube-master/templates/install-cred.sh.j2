@@ -1,0 +1,12 @@
+USER={{ ansible_user }}
+mkdir -p /etc/kubernetes/pki/etcd
+tar xvf /home/${USER}/kubernetes-key.tar
+mv /home/${USER}/tmp/cred/*/ca.crt /etc/kubernetes/pki/
+mv /home/${USER}/tmp/cred/*/ca.key /etc/kubernetes/pki/
+mv /home/${USER}/tmp/cred/*/sa.pub /etc/kubernetes/pki/
+mv /home/${USER}/tmp/cred/*/sa.key /etc/kubernetes/pki/
+mv /home/${USER}/tmp/cred/*/front-proxy-ca.crt /etc/kubernetes/pki/
+mv /home/${USER}/tmp/cred/*/front-proxy-ca.key /etc/kubernetes/pki/
+mv /home/${USER}/tmp/cred/*/etcd-ca.crt /etc/kubernetes/pki/etcd/ca.crt
+mv /home/${USER}/tmp/cred/*/etcd-ca.key /etc/kubernetes/pki/etcd/ca.key
+mv /home/${USER}/tmp/cred/*/admin.conf /etc/kubernetes/admin.conf

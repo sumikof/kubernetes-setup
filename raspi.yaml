@@ -1,6 +1,6 @@
 ---
-- hosts: ras-cluster
-  gather_facts: false
+- hosts: all
+  gather_facts: true
   become: yes
   roles:
     - common

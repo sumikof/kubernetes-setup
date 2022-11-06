@@ -3,7 +3,7 @@
   template:
     src: copy-cred.sh.j2
     dest: /home/{{ansible_user}}/copy-cred.sh
-    mode: 755
+    mode: '0755'
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
 
@@ -11,7 +11,7 @@
   template:
     src: install-cred.sh.j2
     dest: /home/{{ansible_user}}/install-cred.sh
-    mode: 755
+    mode: '0755'
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
 
@@ -19,7 +19,7 @@
   copy:
     src: kube-config-setup.sh
     dest: /home/{{ansible_user}}/kube-config-setup.sh
-    mode: 755
+    mode: '0755'
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
 
@@ -27,6 +27,6 @@
   copy:
     src: init.sh
     dest: /home/{{ansible_user}}/init.sh
-    mode: 755
+    mode: '0755'
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"

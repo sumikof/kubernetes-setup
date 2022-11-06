@@ -20,6 +20,14 @@
   command: "dpkg --print-architecture"
   register: architecture
 
+- name: create apt key dir
+  file:
+    path: "/etc/apt/keyrings"
+    state: directory
+    owner: "root"
+    group: "root"
+    mode: "0755"
+
 - name: set apt key
   apt_key:
     url: "https://download.docker.com/linux/ubuntu/gpg"
@@ -48,7 +56,7 @@
     state: directory
     owner: "root"
     group: "root"
-    mode: "777"
+    mode: "0777"
 
 - name: /etc/docker/daemon.json 
   copy:
@@ -56,11 +64,31 @@
     dest: /etc/docker/daemon.json
     owner: root
     group: root
-- name: rm /etc/containerd/config.toml
-  file:
-    path: "/etc/containerd/config.toml"
-    state: absent
 
+- name: Create containerd config file
+  shell: containerd config default | tee /etc/containerd/config.toml
+
+- name: containerd restart
+  service:
+    name: containerd
+    state: restarted
+    enabled: yes
+- name: Enable systemd cgroup
+  lineinfile:
+    path: /etc/containerd/config.toml
+    regexp: '{{item.regexp}}'
+    line: '{{item.line}}'
+    insertafter: '{{item.insertafter}}'
+  with_items:
+  - regexp: '            SystemdCgroup = false'
+    line: '            SystemdCgroup = true'
+    insertafter: 'plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options'
+ 
+- name: Join docker group
+  user:
+    name: "1{{ ansible_user }}"
+    groups: docker
+    append: yes
 
 - name:  systemctl daemon-reload 
   ansible.builtin.systemd:
@@ -72,8 +100,3 @@
     state: restarted
     enabled: yes
 
-- name: containerd restart
-  service:
-    name: containerd
-    state: restarted
-    enabled: yes

@@ -14,5 +14,14 @@
     user: "{{ ansible_user }}"
     state: present
     key: "{{ hostvars[item].result.public_key }}"
-  loop: "{{ groups['ras-cluster'] }}"
+  loop: "{{ groups['all'] }}"
 
+- name: Distribute hosts file
+  become: yes
+  template:
+    src: hosts.j2
+    dest: /etc/hosts
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
